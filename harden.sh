@@ -50,7 +50,8 @@ echo "--- [5/12] Firewall & Grader Whitelist ---"
 ufw default deny incoming
 ufw default allow outgoing
 ufw allow from $GRADER_IP
-ufw allow 21/tcp   # FTP
+ufw allow 21/tcp           # FTP Control
+ufw allow 40000:50000/tcp  # Common FTP Passive Range
 ufw --force enable
 
 echo "--- [6/12] Port Knocking (SSH Stealth) ---"
@@ -93,7 +94,6 @@ EOF
 service fail2ban restart
 
 echo "--- [8/12] Persistence Watchdog ---"
-# This is our "internal cron" that the Red Team won't easily see
 cat <<EOF > /usr/local/bin/watchdog.sh
 #!/bin/bash
 while true; do
