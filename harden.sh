@@ -54,6 +54,11 @@ ufw allow 21/tcp   # FTP
 ufw --force enable
 
 echo "--- [6/12] Port Knocking (SSH Stealth) ---"
+#password auth allows for passwords, change this to no if you only want keys
+sed -i 's/^#PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+sed -i 's/^PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+service ssh restart
+
 cat <<EOF > /etc/knockd.conf
 [options]
     UseSyslog
